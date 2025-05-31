@@ -1,10 +1,10 @@
 import { error } from "console";
 import cron from "cron";
-import http from "http";
+import https from "https";
 
 const job= new cron.CronJob('*/14 * * * *',function(){
     https.get(process.env.API_URL,(res)=>{
-        if(res.this.statusCode==200)
+        if(res.statusCode==200)
         {
             console.log("Get request sent successfully");
         }
