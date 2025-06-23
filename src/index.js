@@ -8,12 +8,12 @@ import job from './lib/cron.js';
 const app=express()
 const PORT= process.env.PORT
 
+app.use(cors());
 app.use(express.json());  //parse json request bodies
 
-job.start()
+// job.start()
 app.use("/api/auth",authRoutes)
 app.use("/api/books",bookRoutes)
-app.use(cors());
 
 app.listen(PORT,()=>{
  console.log(`Server is runninng ${PORT}`)

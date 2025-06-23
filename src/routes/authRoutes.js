@@ -1,4 +1,4 @@
-import express, { response } from 'express'
+import express from 'express'
 import User from '../models/Users.js';
 import jwt from 'jsonwebtoken'
 const router=express.Router();
@@ -38,7 +38,8 @@ router.post('/register', async (req, res) => {
             }
         })
     } catch (error) {
-        console.log("Error in registration")
+        console.log("Error in registration",error.message)
+        console.error("Mongo error",error.stack);
         res.status(500).json({
             message: "Internal Server error"
         })
@@ -47,6 +48,7 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
+         console.log("Incoming body:", req.body);
     try{
         const {email,password}=req.body
 
