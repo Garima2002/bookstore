@@ -1,23 +1,26 @@
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/Users.js";
-import 'dotenv/config'
+import 'dotenv/config';
 
-const protectRoute=async(req,res,next)=>{
+const protectRoute = async (req, res, next) => {
+  try {
+    const authHeader = req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith("Bearer "))
+      return res.status(401).json({ message: "No authentication token" });
 
-    try {
-        const token=req.header('Authorization').replace("Bearer ","")
-        if(!token) return res.status(401).json({message:"No authentication token"})
-        const decoded=jwt.verify(token,process.env.JWT_SECRET)
+    const token = authHeader.split(" ")[1];
 
-        const user= await User.findById(decoded.userId).select("-password")
+    const decoded = jwt.verify(token, process.env.MY_SECRET);
 
-        if(!user) return res.status(401).json({message:'Token invalid'})
-            req.user=user
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) return res.status(401).json({ message: 'Token invalid' });
 
-            next()
-    } catch (error) {
-        return res.status(401).json({message:'Token is not valid'})
-        
-    }
-}
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error("Auth error:", error.message);
+    return res.status(401).json({ message: 'Token is not valid' });
+  }
+};
+
 export default protectRoute;
