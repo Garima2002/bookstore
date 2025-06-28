@@ -10,7 +10,7 @@ router.post("/",protectRoute , async (req,res)=>{
 
         if(!image ||!title ||!rating ||!caption) return res.status(400).json({message:"Please provide all required fields"})
         
-            const uploadRes= awaitcloudinary.uploader.upload(image);
+            const uploadRes= await cloudinary.uploader.upload(image);
             const imageUrl=uploadRes.secure_url
 
             const newBook=new Book({
