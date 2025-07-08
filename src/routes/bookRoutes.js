@@ -6,19 +6,19 @@ import protectRoute from '../middleware/auth.middleware.js'
 
 router.post("/",protectRoute , async (req,res)=>{
     try{
-    const {title,caption,rating,image,}=req.body
-
-        if(!image ||!title ||!rating ||!caption) return res.status(400).json({message:"Please provide all required fields"})
-        
+    const {title,caption,rating,image,id}=req.body
+        console.log(id)
+        if(!image ||!title ||!rating ||!caption||!id) return res.status(400).json({message:"Please provide all required fields"})
+            console.log('regbody',req)
             const uploadRes= await cloudinary.uploader.upload(image);
             const imageUrl=uploadRes.secure_url
-
+            console.log("Image url ",imageUrl)
             const newBook=new Book({
                 title,
                 rating,
                 image:imageUrl,
                 caption,
-                user:user._id
+                user:id
             })
 
             await newBook.save()
@@ -27,6 +27,7 @@ router.post("/",protectRoute , async (req,res)=>{
     }
     catch(error)
     {
+        console.log(error)
         res.status(500).json({message:'Internal server error'})
     }
 
