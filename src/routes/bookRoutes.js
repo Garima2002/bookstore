@@ -8,7 +8,7 @@ router.post("/",protectRoute , async (req,res)=>{
     try{
     const {title,caption,rating,image,id}=req.body
         console.log(id)
-        if(!image ||!title ||!rating ||!caption||!id) return res.status(400).json({message:"Please provide all required fields"})
+        if(!title ||!rating ||!caption||!id) return res.status(400).json({message:"Please provide all required fields"})
             console.log('regbody',req)
             const uploadRes= await cloudinary.uploader.upload(image);
             const imageUrl=uploadRes.secure_url
@@ -16,7 +16,7 @@ router.post("/",protectRoute , async (req,res)=>{
             const newBook=new Book({
                 title,
                 rating,
-                image:imageUrl,
+                // image:imageUrl,
                 caption,
                 user:id
             })

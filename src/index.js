@@ -12,7 +12,8 @@ const app=express()
 const PORT= process.env.PORT
 
 app.use(cors());
-app.use(express.json());  //parse json request bodies
+app.use(express.json({ limit: '10mb' }));
+// app.use(express.json());  //parse json request bodies
 
 // job.start()
 app.use("/api/auth",authRoutes)
