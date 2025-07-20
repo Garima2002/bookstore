@@ -16,7 +16,7 @@ router.post("/",protectRoute , async (req,res)=>{
             const newBook=new Book({
                 title,
                 rating,
-                // image:imageUrl,
+                image:imageUrl,
                 caption,
                 user:id
             })
